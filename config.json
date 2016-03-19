@@ -1,0 +1,13 @@
+{
+  "mqtt": {
+    "host": "test.mosquitto.org",
+    "port": 1883,
+    "prefix": "test"
+  },
+  "port": 8000,
+  "oauth": {
+    "clientId": "2f9a7842-bf42-4658-b3f9-f39a744ca699",
+    "clientSecret": "284737b0-b2e8-4f62-9c18-d87d6169e1ac"
+  },
+  "token": "8d3e1355-6211-4907-8cfe-1b6afdf56a2d"
+}

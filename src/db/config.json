@@ -1,0 +1,20 @@
+{
+  "development": {
+    "host": "127.0.0.1",
+    "dialect": "sqlite",
+    "storage": "./dev_db.sqlite",
+    "logging": false
+  },
+  "test": {
+    "host": "127.0.0.1",
+    "dialect": "sqlite",
+    "storage": "./test_db.sqlite",
+    "logging": false
+  },
+  "test": {
+    "host": "127.0.0.1",
+    "dialect": "sqlite",
+    "storage": "./db.sqlite",
+    "logging": false
+  }
+}
