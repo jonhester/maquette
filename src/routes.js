@@ -1,19 +1,19 @@
 import client from './client';
 import models from './db/models';
-import config from '../config.json';
+import config from './config';
 import oauth2 from 'simple-oauth2';
 import rp from 'request-promise';
 
 const ENDPOINTS = 'https://graph.api.smartthings.com/api/smartapps/endpoints';
 
 const oauth = oauth2({
-  clientID: config.oauth.clientId,
-  clientSecret: config.oauth.clientSecret,
+  clientID: config.get('oauth.clientId'),
+  clientSecret: config.get('oauth.clientSecret'),
   site: 'https://graph.api.smartthings.com',
 });
 
 const authorizationUri = oauth.authCode.authorizeURL({
-  redirect_uri: 'http://71.75.25.159:8000/oauth',
+  redirect_uri: `${config.get('app.host')}/oauth`,
   scope: 'app',
   state: '3(#0/!~',
 });
@@ -24,7 +24,7 @@ const routes = [
     path: '/',
     handler: (request, reply) => {
       // check for token
-      if (config.token) return reply('Looking good');
+      if (config.get('endpoint.token')) return reply('Looking good');
 
       return reply().redirect(authorizationUri);
     },
@@ -41,11 +41,17 @@ const routes = [
 
         // result.access_token is the token, get the endpoint
         const bearer = result.access_token;
-        
+
         const options = { uri: `${ENDPOINTS}?access_token=${bearer}`, json: true };
 
         const response = await rp(options);
         const accessUrl = response[0].url;
+
+        config.set('endpoint', {
+          url: accessUrl,
+          token: bearer,
+        });
+
         return reply(`<pre>https://graph.api.smartthings.com/${accessUrl}</pre><br><pre>Bearer ${bearer}</pre>`);
       };
 
@@ -77,11 +83,6 @@ const routes = [
         console.error(e);
       }
 
-      // subscribe if necessary
-      // if (!isSubscribed(topic)) {
-      //   client.subscribe(topic);
-      //   console.log('subscribing to ' + topic);
-      // }
       reply().code(204);
     },
   },

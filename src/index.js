@@ -1,15 +1,16 @@
 import { Server } from 'hapi';
 import routes from './routes';
-import config from '../config.json';
+import config from './config';
 
 const server = new Server();
 
 server.connection({
   host: process.env.HOSTNAME || '0.0.0.0',
-  port: config.port || 9200,
+  port: config.get('app.port') || 9200,
   routes: { cors: true },
 });
 
+config.set('app.port', 7777);
 server.register(
   [
     // plugins go here

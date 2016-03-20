@@ -1,9 +1,9 @@
 import mqtt from 'mqtt';
 import models from './db/models';
-import config from '../config.json';
+import config from './config';
 import rp from 'request-promise';
 
-const { host, port = 1883, prefix = 'smartthings' } = config.mqtt;
+const { host, port = 1883, prefix = 'smartthings' } = config.get('mqtt');
 
 const mqttClient = mqtt.connect({ host, port });
 
@@ -43,8 +43,24 @@ mqttClient.on('message', (topic, message) => {
   const type = topicArray.pop();
   const name = topicArray.pop();
 
+  const value = message.toString();
 
+  const payload = { name, type, value };
 
-  console.log({ name, type, value: message.toString() });
+  if (set) {
+    const options = {
+      method: 'PUT',
+      uri: config.get('endpoint.url'),
+      body: payload,
+      headers: {
+        Authorization: `Bearer ${config.get('endpoint.token')}`,
+      },
+    };
 
+    rp(options)
+      .then(() => console.log('Sent command to Smartthings', JSON.stringify(payload)))
+      .catch((err) => console.error(err));
+  }
+
+  console.log({ name, type, value });
 });
