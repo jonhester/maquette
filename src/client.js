@@ -3,6 +3,8 @@ import models from './db/models';
 import config from './config';
 import rp from 'request-promise';
 
+const API = 'https://graph.api.smartthings.com/';
+
 const { host, port = 1883, prefix = 'smartthings' } = config.get('mqtt');
 
 const mqttClient = mqtt.connect({ host, port });
@@ -50,7 +52,7 @@ mqttClient.on('message', (topic, message) => {
   if (set) {
     const options = {
       method: 'PUT',
-      uri: config.get('endpoint.url'),
+      uri: `${API}${config.get('endpoint.url')}`,
       body: payload,
       headers: {
         Authorization: `Bearer ${config.get('endpoint.token')}`,

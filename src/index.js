@@ -10,7 +10,6 @@ server.connection({
   routes: { cors: true },
 });
 
-config.set('app.port', 7777);
 server.register(
   [
     // plugins go here
