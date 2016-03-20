@@ -2,7 +2,7 @@
   "mqtt": {
     "host": "localhost",
     "port": 1883,
-    "prefix": "test"
+    "prefix": "smartthings"
   },
   "app": {
     "host": "http://71.75.25.159:8000",
