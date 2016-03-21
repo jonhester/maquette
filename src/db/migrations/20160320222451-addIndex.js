@@ -9,7 +9,7 @@ module.exports = {
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
 
-    return queryInterface.addIndex('topic', ['name']);
+    return queryInterface.addIndex('topics', ['name']);
   },
 
   down: function (queryInterface, Sequelize) {
@@ -21,6 +21,6 @@ module.exports = {
       return queryInterface.dropTable('users');
     */
 
-    return queryInterface.remove('topic', ['name']);
+    return queryInterface.remove('topics', ['name']);
   }
 };
