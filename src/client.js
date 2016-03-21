@@ -52,11 +52,12 @@ mqttClient.on('message', (topic, message) => {
   if (set) {
     const options = {
       method: 'PUT',
-      uri: `${API}${config.get('endpoint.url')}`,
+      uri: `${API}${config.get('endpoint.url')}/set`,
       body: payload,
       headers: {
         Authorization: `Bearer ${config.get('endpoint.token')}`,
       },
+      json: true,
     };
 
     rp(options)
@@ -64,5 +65,5 @@ mqttClient.on('message', (topic, message) => {
       .catch((err) => console.error(err));
   }
 
-  console.log({ name, type, value });
+  console.log({ topic, name, type, value });
 });

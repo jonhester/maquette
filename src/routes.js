@@ -57,7 +57,7 @@ const routes = [
 
       oauth.authCode.getToken({
         code,
-        redirect_uri: 'http://71.75.25.159:8000/oauth',
+        redirect_uri: `${config.get('app.host')}/oauth`,
       }, saveToken);
     },
   },
@@ -90,7 +90,7 @@ const routes = [
     method: 'POST',
     path: '/subscribe',
     handler: (request, reply) => {
-      console.log(request.payload)
+      console.log(request.payload);
       reply().code(204);
     },
   },

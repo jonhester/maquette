@@ -1,6 +1,6 @@
 {
   "mqtt": {
-    "host": "localhost",
+    "host": "test.mosquitto.org",
     "port": 1883,
     "prefix": "smartthings"
   },
@@ -17,7 +17,7 @@
     "clientSecret": "284737b0-b2e8-4f62-9c18-d87d6169e1ac"
   },
   "endpoint": {
-    "url": "/api/smartapps/installations/10e05ead-1b79-42ba-a5b9-98810abccdc1",
-    "token": "8d3e1355-6211-4907-8cfe-1b6afdf56a2d"
+    "url": "",
+    "token": ""
   }
 }
