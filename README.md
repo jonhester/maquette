@@ -15,3 +15,6 @@ npm run build
 node .
 ```
 
+4. Make sure the app is externally accessible and navigate to `https://maquette.mydomain.com`
+5. Authorize the Maquette
+6. Open the smartapp on your mobile device and set your host, user, and password
