@@ -1,3 +1,5 @@
+import org.apache.commons.codec.binary.Base64
+
 /**
  *  MQTT
  *
@@ -5,7 +7,7 @@
  *
  */
 definition(
-    name: "MQTT",
+    name: "Maquette",
     namespace: "jonhester",
     author: "Jon Hester",
     description: "Connects Smartthings to MQTT",
@@ -15,27 +17,29 @@ definition(
     iconX3Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
     oauth: true)
 
+preferences(oauthPage: "deviceAuthorization") {
+    // deviceAuthorization page is simply the devices to authorize
+    page(name: "deviceAuthorization", title: "", nextPage: "otherPage",
+         install: false, uninstall: true) {
+        section("Select Devices to Authorize") {
+            input "switches", "capability.switch", title: "Switches?", multiple: true, required: false
+            input "contactSensors", "capability.contactSensor", required: false, multiple: true
+      		input "temperatureSensors", "capability.temperatureMeasurement", required: false, multiple: true
+      		input "batterySensors", "capability.battery", required: false, multiple: true
+      		input "motionSensors", "capability.motionSensor", required: false, multiple: true
+        }
 
-preferences {
-  page(name: "deviceAuthorization", title: "", nextPage: "otherPage",
-         install: true, uninstall: true) {
-    section("Select Devices to Authorize") {
-      input "switches", "capability.switch", multiple: true, required: false
-      input "contactSensors", "capability.contactSensor", required: false, multiple: true
-      input "temperatureSensors", "capability.temperatureMeasurement", required: false, multiple: true
-      input "batterySensors", "capability.battery", required: false, multiple: true
-      input "motionSensors", "capability.motionSensor", required: false, multiple: true
     }
 
-  }
-
-  page(name: "otherPage")
+    page(name: "otherPage")
 }
 
 def otherPage() {
-    dynamicPage(name: "otherPage", title: "Other Page", install: true) {
-        section("Other Inputs") {
-            input "url", "text", title: "Bridge URL", description: "Your MQTT Bridge url", required: true
+    dynamicPage(name: "otherPage", title: "Server Settings", install: true) {
+        section("Maquette Instance") {
+            input "uri", "text", title: "URL", description: "Maquette instance url", required: true
+            input "username", "text", title: "Username", description: "Maquette username", required: true
+            input "password", "password", title: "Password", description: "Maquette password", required: true
         }
     }
 }
@@ -98,6 +102,17 @@ def switchHandler(name, type, value) {
 
 def eventHandler(evt) {
 
+  def data = "${settings.username}:${settings.password}"
+  def bytes = data.bytes
+
+  Base64 coder = new Base64()
+
+  def encodedData = coder.encode(bytes)
+  String basicAuth = new String(encodedData)
+  
+  log.debug "token ${basicAuth}"
+  log.debug "uri ${settings.uri}"
+
   def json_body = [
     id: evt.deviceId,
     value: evt.value,
@@ -106,9 +121,12 @@ def eventHandler(evt) {
   ]
 
   def json_params = [
-    uri: "${settings.url}/push",
+    uri: "${settings.uri}/push",
     success: success,
-    body: json_body
+    body: json_body,
+    headers: [
+      Authorization: "Basic ${basicAuth}"
+    ]
   ]
 
   try {

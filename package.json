@@ -33,8 +33,10 @@
     "tape": "^4.2.1"
   },
   "dependencies": {
+    "bcrypt": "^0.8.5",
     "bluebird": "^3.3.4",
     "hapi": "^13.2.1",
+    "hapi-auth-basic": "^4.1.0",
     "mqtt": "^1.7.3",
     "request-promise": "^0.4.3",
     "sequelize": "^3.19.3",

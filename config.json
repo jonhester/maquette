@@ -5,16 +5,16 @@
     "prefix": "smartthings"
   },
   "app": {
-    "host": "http://71.75.25.159:8000",
+    "host": "http://localhost:8000",
     "port": 8000,
     "auth": {
       "user": "admin",
-      "password": "password"
+      "password": "$2a$08$nfaNcSXOWX6bCIzeJ2Zwa.Dz8PCOg8yQ0uJ1KRaDbvTiJpaM7rXAC"
     }
   },
   "oauth": {
-    "clientId": "2f9a7842-bf42-4658-b3f9-f39a744ca699",
-    "clientSecret": "284737b0-b2e8-4f62-9c18-d87d6169e1ac"
+    "clientId": "",
+    "clientSecret": ""
   },
   "endpoint": {
     "url": "",
