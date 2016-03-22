@@ -5,9 +5,14 @@ import rp from 'request-promise';
 
 const API = 'https://graph.api.smartthings.com/';
 
-const { host, port = 1883, prefix = 'smartthings' } = config.get('mqtt');
+const { host, port = 1883, prefix = 'smartthings', username, password } = config.get('mqtt');
 
-const mqttClient = mqtt.connect({ host, port });
+const mqttOptions = { host, port };
+
+if (username) mqttOptions.username = username;
+if (password) mqttOptions.password = password;
+
+const mqttClient = mqtt.connect(mqttOptions);
 
 const topicName = ({ type, name }) => `${prefix}/${name}/${type}`;
 const commandTopicName = ({ type, name }) => `${topicName({ type, name })}/set`;

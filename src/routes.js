@@ -90,7 +90,6 @@ const routes = [
     method: 'POST',
     path: '/subscribe',
     handler: (request, reply) => {
-      console.log(request.payload);
       reply().code(204);
     },
   },
